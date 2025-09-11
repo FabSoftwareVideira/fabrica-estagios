@@ -11,7 +11,7 @@ services:
     volumes:
       - estagio_db_data:/var/lib/postgresql/estagio_data  # Monta o volume no diretório personalizado
     ports:
-      - "5432:5432"
+      - "50236:5432"
     networks:
       - estagios-network
 
@@ -19,7 +19,7 @@ services:
     container_name: estagios-prod-web
     build: .
     ports:
-      - "4000:5000"
+      - "8081:5000"
     volumes:
       - .:/app
     depends_on:
@@ -29,11 +29,11 @@ services:
     command: >
       sh -c "flask db upgrade && gunicorn --bind 0.0.0.0:5000 app:app --workers 3 --threads 2 --timeout 120"
     networks:
-      - estagios-network
+      - fabrica-network
 
 volumes:
   estagio_db_data:
 
 networks:
-  estagios-network:
+  fabrica-network:
     external: true
