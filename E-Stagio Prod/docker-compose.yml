@@ -6,9 +6,6 @@ services:
       - .env
     environment:
       - PGDATA=/var/lib/postgresql/estagio_data
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=estagios-prod-db
     volumes:
       - estagio_db_data:/var/lib/postgresql/estagio_data
     ports:
