@@ -17,11 +17,6 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: 🔧 Corrigir permissões da workspace
-        run: |
-          sudo chown -R $USER:$USER /opt/actions-runner/_work || true
-          sudo chmod -R u+w /opt/actions-runner/_work || true
-          
       - name: 📂 Checkout do Código
         uses: actions/checkout@v4
         with:
