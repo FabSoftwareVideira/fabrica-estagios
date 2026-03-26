@@ -22,6 +22,11 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: 📄 Criar arquivo .env
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+
       - name: 🛠️ Validar Ambiente e Arquivos
         working-directory: ${{ env.APP_DIR }}
         run: |
