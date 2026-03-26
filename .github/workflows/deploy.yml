@@ -59,8 +59,8 @@ jobs:
             echo "Nenhum container encontrado para o projeto ${{ env.PROJECT_NAME }}"
           fi
 
-      - name: 🧹 Limpeza de Imagens Antigas
-        if: always()
-        run: |
-          echo "Removendo imagens não utilizadas..."
-          docker image prune -f
+      # - name: 🧹 Limpeza de Imagens Antigas
+      #   if: always()
+      #   run: |
+      #     echo "Removendo imagens não utilizadas..."
+      #     docker image prune -f
