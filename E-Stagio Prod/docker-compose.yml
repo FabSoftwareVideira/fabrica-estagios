@@ -7,9 +7,9 @@ services:
     env_file:
       - .env
     environment:
-      - PGDATA=/var/lib/postgresql/estagio_data  # Define um diretório personalizado
+      - PGDATA=/var/lib/postgresql/estagio_data # Define um diretório personalizado
     volumes:
-      - estagio_db_data:/var/lib/postgresql/estagio_data  # Monta o volume no diretório personalizado
+      - estagio_db_data:/var/lib/postgresql/estagio_data # Monta o volume no diretório personalizado
     ports:
       - "50236:5432"
     networks:
@@ -20,8 +20,8 @@ services:
     build: .
     ports:
       - "5000:5000"
-    volumes:
-      - .:/app
+    # volumes:
+    #   - .:/app
     depends_on:
       - estagios-db
     env_file:
@@ -33,6 +33,7 @@ services:
 
 volumes:
   estagio_db_data:
+
 
 networks:
   fabrica-network:
