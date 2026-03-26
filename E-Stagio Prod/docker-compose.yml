@@ -13,13 +13,13 @@ services:
     ports:
       - "50236:5432"
     networks:
-      - estagios-network
+      - fabrica-network
 
   estagios-web:
     container_name: estagios-prod-web
     build: .
     ports:
-      - "8081:5000"
+      - "5000:5000"
     volumes:
       - .:/app
     depends_on:
