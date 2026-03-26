@@ -1,0 +1,61 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  APP_DIR: E-Stagio Prod
+  PROJECT_NAME: estagios-prod
+  COMPOSE_FILE: docker-compose.yml
+
+jobs:
+  deploy:
+    name: 🚀 Deploy ${{ github.event.repository.name }}
+    runs-on: self-hosted
+
+    steps:
+      - name: 📂 Checkout do Código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: 🛠️ Validar Ambiente e Arquivos
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          echo "Verificando arquivos críticos..."
+          test -f ${{ env.COMPOSE_FILE }} || (echo "ERRO: ${{ env.COMPOSE_FILE }} não encontrado" && exit 1)
+
+          echo "Validando sintaxe do Docker Compose..."
+          docker compose -f ${{ env.COMPOSE_FILE }} config -q
+
+      - name: 🐳 Atualizar e Subir Containers
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          echo "Atualizando imagens para o projeto: ${{ env.PROJECT_NAME }}"
+          docker compose -p ${{ env.PROJECT_NAME }} -f ${{ env.COMPOSE_FILE }} pull --ignore-pull-failures
+
+          echo "Iniciando serviços..."
+          docker compose -p ${{ env.PROJECT_NAME }} -f ${{ env.COMPOSE_FILE }} up -d --build --remove-orphans
+
+      - name: 📊 Status Final
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          echo "--- Containers Ativos ---"
+          docker compose -p ${{ env.PROJECT_NAME }} -f ${{ env.COMPOSE_FILE }} ps
+
+          echo "--- Consumo de Recursos ---"
+          CONTAINER_IDS=$(docker ps -q --filter "label=com.docker.compose.project=${{ env.PROJECT_NAME }}")
+          if [ -n "$CONTAINER_IDS" ]; then
+            docker stats --no-stream $CONTAINER_IDS
+          else
+            echo "Nenhum container encontrado para o projeto ${{ env.PROJECT_NAME }}"
+          fi
+
+      - name: 🧹 Limpeza de Imagens Antigas
+        if: always()
+        run: |
+          echo "Removendo imagens não utilizadas..."
+          docker image prune -f
