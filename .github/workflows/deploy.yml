@@ -40,16 +40,16 @@ jobs:
         working-directory: ${{ env.APP_DIR }}
         run: |
           echo "Atualizando imagens para o projeto: ${{ env.PROJECT_NAME }}"
-          docker compose -p ${{ env.PROJECT_NAME }} -f ${{ env.COMPOSE_FILE }} pull --ignore-pull-failures
+          docker compose -f ${{ env.COMPOSE_FILE }} pull --ignore-pull-failures
 
           echo "Iniciando serviços..."
-          docker compose -p ${{ env.PROJECT_NAME }} -f ${{ env.COMPOSE_FILE }} up -d --build --remove-orphans
+          docker compose -f ${{ env.COMPOSE_FILE }} up -d --build --remove-orphans
 
       - name: 📊 Status Final
         working-directory: ${{ env.APP_DIR }}
         run: |
           echo "--- Containers Ativos ---"
-          docker compose -p ${{ env.PROJECT_NAME }} -f ${{ env.COMPOSE_FILE }} ps
+          docker compose -f ${{ env.COMPOSE_FILE }} ps
 
           echo "--- Consumo de Recursos ---"
           CONTAINER_IDS=$(docker ps -q --filter "label=com.docker.compose.project=${{ env.PROJECT_NAME }}")
