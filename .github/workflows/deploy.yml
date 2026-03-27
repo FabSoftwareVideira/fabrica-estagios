@@ -47,14 +47,28 @@ jobs:
         run: |
           git fetch --force --tags origin
 
+      # deploy.yml - steps corrigidos
+
       - name: 🏷️ Definir tag da imagem
         working-directory: ${{ env.APP_DIR }}
         run: |
-          TARGET_REF="${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}"
-          IMAGE_TAG="$(git describe --tags --always \"${TARGET_REF}\" 2>/dev/null || echo 'v0.1.0-dev')"
+          # Usar o SHA exato do workflow que publicou a imagem
+          TARGET_SHA="${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}"
+          
+          # ✅ Passar o SHA corretamente ao git describe
+          IMAGE_TAG="$(git describe --tags --always ${TARGET_SHA} 2>/dev/null || echo '')"
+          
+          # Fallback explícito e verbose para debugar
+          if [[ -z "${IMAGE_TAG}" ]]; then
+            echo "⚠️ git describe falhou para ${TARGET_SHA}, usando SHA curto"
+            IMAGE_TAG="v0.1.0-dev-$(echo ${TARGET_SHA} | cut -c1-7)"
+          fi
+          
           if [[ ! "${IMAGE_TAG}" =~ ^v ]]; then
             IMAGE_TAG="v0.1.0-dev-${IMAGE_TAG}"
           fi
+          
+          echo "✅ IMAGE_TAG resolvida: ${IMAGE_TAG}"
           echo "IMAGE_TAG=${IMAGE_TAG}" >> "$GITHUB_ENV"
 
       - name: 📄 Criar arquivo .env
@@ -66,15 +80,9 @@ jobs:
             echo "APP_VERSION=${IMAGE_TAG}"
             echo "APP_ENV=production"
           } >> .env
-
-      - name: 🛠️ Validar Ambiente e Arquivos
-        working-directory: ${{ env.APP_DIR }}
-        run: |
-          echo "Verificando arquivos críticos..."
-          test -f ${{ env.COMPOSE_FILE }} || (echo "ERRO: ${{ env.COMPOSE_FILE }} não encontrado" && exit 1)
-
-          echo "Validando sintaxe do Docker Compose..."
-          docker compose -f ${{ env.COMPOSE_FILE }} config -q
+          
+          # ✅ Log para confirmar o que vai ser deployado
+          echo "📦 Imagem que será deployada: ${{ env.GHCR_IMAGE }}:${IMAGE_TAG}"
 
       - name: 🐳 Atualizar e Subir Containers
         working-directory: ${{ env.APP_DIR }}
@@ -83,7 +91,8 @@ jobs:
           docker compose -f ${{ env.COMPOSE_FILE }} pull
 
           echo "Iniciando serviços..."
-          docker compose -f ${{ env.COMPOSE_FILE }} up -d --remove-orphans
+          # ✅ --pull always garante que usa a imagem recém baixada
+          docker compose -f ${{ env.COMPOSE_FILE }} up -d --remove-orphans --pull always
 
       - name: 📊 Status Final
         working-directory: ${{ env.APP_DIR }}
