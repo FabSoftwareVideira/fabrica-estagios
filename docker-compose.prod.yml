@@ -35,6 +35,7 @@ services:
     environment:
       - FLASK_APP=run.py
       - FLASK_ENV=production
+      - SQLALCHEMY_DATABASE_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@estagios-db/${POSTGRES_DB}
     command: >
       sh -c "flask db upgrade && gunicorn --bind 0.0.0.0:5000 app:app --workers ${GUNICORN_WORKERS} --threads ${GUNICORN_THREADS} --timeout ${GUNICORN_TIMEOUT}"
     networks:
@@ -47,4 +48,4 @@ volumes:
 
 networks:
   fabrica-network:
-    driver: bridge
+    external: true
