@@ -16,7 +16,6 @@ env:
   APP_DIR: .
   PROJECT_NAME: estagios-prod
   COMPOSE_FILE: docker-compose.prod.yml
-  GHCR_IMAGE: ghcr.io/${{ github.repository_owner }}/fabrica-estagios
 
 jobs:
   deploy:
@@ -37,6 +36,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🧾 Definir nome da imagem
+        run: |
+          REPOSITORY_OWNER_LOWER="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
+          echo "GHCR_IMAGE=ghcr.io/${REPOSITORY_OWNER_LOWER}/fabrica-estagios" >> "$GITHUB_ENV"
 
       - name: 🏷️ Definir tag da imagem
         working-directory: ${{ env.APP_DIR }}
