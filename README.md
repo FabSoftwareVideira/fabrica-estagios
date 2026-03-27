@@ -81,3 +81,5 @@ Em produção:
 ```bash
 docker exec -it estagios-prod-web flask seed
 ```
+
+## Rodando localmente (modo desenvolvimento)
