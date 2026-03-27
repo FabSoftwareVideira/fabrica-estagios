@@ -9,7 +9,7 @@ on:
 env:
   APP_DIR: .
   PROJECT_NAME: estagios-prod
-  COMPOSE_FILE: docker-compose.yml
+  COMPOSE_FILE: docker-compose.prod.yml
 
 jobs:
   deploy:

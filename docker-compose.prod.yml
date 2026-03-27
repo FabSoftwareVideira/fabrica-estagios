@@ -1,6 +1,6 @@
 services:
   estagios-db:
-    container_name: estagios-dev-db
+    container_name: estagios-prod-db
     image: postgres:18.3
     env_file:
       - .env
@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - estagios-network
+      - fabrica-network
     restart: always
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
@@ -20,15 +20,13 @@ services:
       retries: 3
 
   estagios-web:
+    container_name: estagios-prod-web
     build:
       context: .
       dockerfile: Dockerfile
-      target: dev # Use the 'dev' stage from the Dockerfile
-    container_name: estagios-dev-web
+      target: prod # Use the 'prod' stage from the Dockerfile
     ports:
       - "5000:5000"
-    volumes:
-      - .:/app
     depends_on:
       estagios-db:
         condition: service_healthy
@@ -36,12 +34,12 @@ services:
       - .env
     environment:
       - FLASK_APP=run.py
-      - FLASK_ENV=development
+      - FLASK_ENV=production
       - SQLALCHEMY_DATABASE_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@estagios-db/${POSTGRES_DB}
     command: >
-      sh -c "flask db upgrade && flask run --host=0.0.0.0 --port=5000 --debug"
+      sh -c "flask db upgrade && gunicorn --bind 0.0.0.0:5000 app:app --workers ${GUNICORN_WORKERS} --threads ${GUNICORN_THREADS} --timeout ${GUNICORN_TIMEOUT}"
     networks:
-      - estagios-network
+      - fabrica-network
     restart: always
 
 volumes:
@@ -49,5 +47,5 @@ volumes:
 
 
 networks:
-  estagios-network:
-    driver: bridge
+  fabrica-network:
+    external: true
