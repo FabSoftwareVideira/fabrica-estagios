@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  APP_DIR: E-Stagio Prod
+  APP_DIR: .
   PROJECT_NAME: estagios-prod
   COMPOSE_FILE: docker-compose.yml
 
