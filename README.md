@@ -82,4 +82,30 @@ Em produção:
 docker exec -it estagios-prod-web flask seed
 ```
 
+## Publicação no GHCR
+
+O projeto publica a imagem de produção no GitHub Container Registry e o deploy em produção faz `pull` dessa imagem, em vez de gerar o build no servidor.
+
+Imagem publicada:
+- `ghcr.io/fabsoftwarevideira/fabrica-estagios:latest`
+- `ghcr.io/fabsoftwarevideira/fabrica-estagios:sha-<commit>`
+- `ghcr.io/fabsoftwarevideira/fabrica-estagios:<versao>` quando houver tag Git no formato `v*`
+
+Workflows:
+- [.github/workflows/publish-image.yml](.github/workflows/publish-image.yml): builda a stage `prod` do Dockerfile e publica no GHCR.
+- [.github/workflows/deploy.yml](.github/workflows/deploy.yml): após a publicação, autentica no GHCR, faz `pull` da imagem e sobe os containers com o Compose de produção.
+
+Para o deploy automático funcionar:
+- o package do GHCR deve estar acessível para o repositório ou para o token usado pelo workflow;
+- o runner self-hosted precisa conseguir acessar `ghcr.io`;
+- o secret `ENV_FILE` continua sendo a fonte das variáveis sensíveis do ambiente.
+
+Deploy manual da imagem publicada:
+
+```bash
+docker login ghcr.io
+docker compose -f docker-compose.prod.yml pull
+docker compose -f docker-compose.prod.yml up -d --remove-orphans
+```
+
 ## Rodando localmente (modo desenvolvimento)

@@ -21,13 +21,7 @@ services:
 
   estagios-web:
     container_name: estagios-prod-web
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: prod # Use the 'prod' stage from the Dockerfile
-      args:
-        APP_VERSION: ${APP_VERSION}
-        APP_ENV: production
+    image: ${APP_IMAGE:-ghcr.io/fabsoftwarevideira/fabrica-estagios}:${APP_VERSION}
     ports:
       - "5000:5000"
     depends_on:
