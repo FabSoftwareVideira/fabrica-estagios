@@ -1,3 +1,5 @@
+name: estagios-prod # ✅ Fix #3: project name explícito, alinha com deploy.yml
+
 services:
   estagios-db:
     container_name: estagios-prod-db
@@ -8,8 +10,7 @@ services:
       - PGDATA=/var/lib/postgresql/estagio_data
     volumes:
       - estagio_db_data:/var/lib/postgresql/estagio_data
-    ports:
-      - "50236:5432"
+    # ✅ Fix #4: porta removida — acesso apenas via rede interna Docker
     networks:
       - fabrica-network
     restart: always
@@ -21,7 +22,10 @@ services:
 
   estagios-web:
     container_name: estagios-prod-web
-    image: ${APP_IMAGE:-ghcr.io/fabsoftwarevideira/fabrica-estagios}:${APP_VERSION}
+    # ✅ Fix #1: fallback adicionado para APP_VERSION
+    image: ${APP_IMAGE:-ghcr.io/fabsoftwarevideira/fabrica-estagios}:${APP_VERSION:-latest}
+    # ✅ Fix #2: força pull da imagem remota sempre
+    pull_policy: always
     ports:
       - "5000:5000"
     depends_on:
