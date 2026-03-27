@@ -1,4 +1,4 @@
-# e-stagio
+# Gerenciamento de Estágios - Fábrica de Software do IFC Videira
 
 Projeto de Extensão do IFC-Videira intitulado "Uma ferramenta computacional para gerenciar os estágios supervisionados do curso técnico em Informática do IFC Videira e otimizar o fluxo de trabalho dos servidores envolvidos." sob a coordenação do prof. Wanderson Rigo e tendo o aluno de CCO Bruno Vinícus Pergher (https://github.com/BrunoPergher) como bolsista.
 
@@ -18,7 +18,11 @@ Está executando em https://estagios.fsw-ifc.brdrive.net
 
 Pré-requisitos:
 - Docker e Docker Compose instalados.
-- Arquivo `.env` na raiz do projeto com as variáveis necessárias (incluindo conexão com banco e chaves da aplicação).
+- Copie o arquivo `.env.sample` para `.env` e ajuste as variáveis conforme necessário
+
+Variáveis de metadados do app:
+- `APP_VERSION`: versão publicada para a aplicação e para as imagens/containers Docker.
+- `APP_ENV`: ambiente padrão do `.env`; o Compose de desenvolvimento força `development` e o Compose de produção força `production`.
 
 Subir o ambiente:
 

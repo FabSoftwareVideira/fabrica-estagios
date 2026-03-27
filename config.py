@@ -7,7 +7,9 @@ load_dotenv()
 class Config:
     SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = os.getenv('SECRET_KEY') 
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    APP_VERSION = os.getenv('APP_VERSION', '0.1.0')
+    APP_ENV = os.getenv('APP_ENV', os.getenv('FLASK_ENV', 'development'))
     MAIL_SERVER = os.getenv('MAIL_SERVER')
     MAIL_PORT = int(os.getenv('MAIL_PORT'))
     MAIL_USE_TLS = os.getenv('MAIL_USE_TLS') == 'True'

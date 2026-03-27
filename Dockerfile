@@ -2,8 +2,17 @@ FROM python:3.9-slim AS base
 
 WORKDIR /app
 
+ARG APP_VERSION=0.1.0
+ARG APP_ENV=development
+
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV APP_VERSION=${APP_VERSION}
+ENV APP_ENV=${APP_ENV}
+
+LABEL org.opencontainers.image.title="fabrica-estagios"
+LABEL org.opencontainers.image.version="${APP_VERSION}"
+LABEL net.brdrive.fsw-ifc-estagios.environment="${APP_ENV}"
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
