@@ -45,7 +45,11 @@ jobs:
       - name: 🏷️ Definir tag da imagem
         working-directory: ${{ env.APP_DIR }}
         run: |
-          IMAGE_TAG="sha-$(git rev-parse --short HEAD)"
+          # Usar git describe para obter versão vX.X.X
+          IMAGE_TAG="$(git describe --tags --always 2>/dev/null || echo 'v0.1.0-dev')"
+          if [[ ! "${IMAGE_TAG}" =~ ^v ]]; then
+            IMAGE_TAG="v0.1.0-dev-${IMAGE_TAG}"
+          fi
           echo "IMAGE_TAG=${IMAGE_TAG}" >> "$GITHUB_ENV"
 
       - name: 📄 Criar arquivo .env
