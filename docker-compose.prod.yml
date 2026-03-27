@@ -10,7 +10,6 @@ services:
       - PGDATA=/var/lib/postgresql/estagio_data
     volumes:
       - estagio_db_data:/var/lib/postgresql/estagio_data
-    # ✅ Fix #4: porta removida — acesso apenas via rede interna Docker
     networks:
       - fabrica-network
     restart: always
