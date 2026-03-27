@@ -1,7 +1,7 @@
 services:
   estagios-db:
     container_name: estagios-prod-db
-    image: postgres:18.3
+    image: postgres:13
     env_file:
       - .env
     environment:
