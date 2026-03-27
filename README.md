@@ -58,10 +58,22 @@ docker compose exec estagios-web flask db migrate -m "descricao_da_migration"
 docker compose exec estagios-web flask db upgrade
 ```
 
+Em produção:
+
+```bash
+docker exec -it estagios-prod-web flask db upgrade
+```
+
 ### Seed de dados
 
 O projeto possui o comando `flask seed` para criar dados iniciais (idempotente):
 
 ```bash
 docker compose exec estagios-web flask seed
+```
+
+Em produção:
+
+```bash
+docker exec -it estagios-prod-web flask seed
 ```

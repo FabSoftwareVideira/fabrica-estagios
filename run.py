@@ -49,10 +49,10 @@ def seed_command():
         return user
 
     admin_user = ensure_user('admin', 'admin@admin.com', 'Admin123!', ['admin'])
-    empresa_user = ensure_user('empresa.demo', 'empresa.demo@estagios.local', 'Demo123!', ['empresa'])
-    professor_user = ensure_user('professor.demo', 'professor.demo@estagios.local', 'Demo123!', ['professor'])
-    aluno_user = ensure_user('aluno.demo', 'aluno.demo@estagios.local', 'Demo123!', ['aluno'])
-    supervisor_user = ensure_user('supervisor.demo', 'supervisor.demo@estagios.local', 'Demo123!', ['supervisor'])
+    empresa_user = ensure_user('empresa.demo', 'empresa.demo@estagios.com', 'Demo123!', ['empresa'])
+    professor_user = ensure_user('professor.demo', 'professor.demo@estagios.com', 'Demo123!', ['professor'])
+    aluno_user = ensure_user('aluno.demo', 'aluno.demo@estagios.com', 'Demo123!', ['aluno'])
+    supervisor_user = ensure_user('supervisor.demo', 'supervisor.demo@estagios.com', 'Demo123!', ['supervisor'])
 
     empresa = Empresa.query.filter_by(cnpj='12.345.678/0001-90').first()
     if not empresa:
@@ -63,8 +63,8 @@ def seed_command():
             cpf_responsavel='123.456.789-00',
             nome_empresa='Empresa Demo Ltda',
             nome_responsavel='Maria Responsavel',
-            email_empresa='contato@empresademo.local',
-            email_responsavel='maria@empresademo.local',
+            email_empresa='contato@empresademo.com',
+            email_responsavel='maria@empresademo.com',
             telefone_empresa='(49) 3333-0000',
             telefone_responsavel='(49) 99999-0000',
             user_id=empresa_user.id,
@@ -108,7 +108,7 @@ def seed_command():
             nome='Supervisor Demo',
             formacao='Tecnólogo em TI',
             telefone='(49) 99999-2222',
-            email='supervisor.demo@empresademo.local',
+            email='supervisor.demo@empresademo.com',
             empresa_id=empresa.id,
             user_id=supervisor_user.id,
             is_approved=True

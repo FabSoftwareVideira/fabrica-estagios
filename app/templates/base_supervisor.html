@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,11 +17,12 @@
     <!-- Bloco adicional para CSS customizado -->
     {% block head %}{% endblock %}
 </head>
+
 <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url_for('index') }}">E-Stagio IFC Videira</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -30,7 +32,7 @@
                         <a class="nav-link" href="{{ url_for('index') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout">Sair</a>
+                        <a class="nav-link text-danger" href="/logout">Sair</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -53,11 +55,11 @@
         <!-- Bloco de conteúdo principal que será substituído nos templates filhos -->
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+        </div>
+        {% endfor %}
         {% endif %}
         {% endwith %}
 
@@ -77,4 +79,5 @@
         <p class="text-muted mb-0">&copy; 2024 E-Stágio IFC Videira. Todos os direitos reservados.</p>
     </div>
 </footer>
+
 </html>
