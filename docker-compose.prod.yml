@@ -38,7 +38,6 @@ services:
       - FLASK_ENV=production
       - APP_VERSION=${APP_VERSION}
       - APP_ENV=production
-      - SQLALCHEMY_DATABASE_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@estagios-db/${POSTGRES_DB}
     labels:
       - org.opencontainers.image.version=${APP_VERSION}
       - net.brdrive.fsw-ifc-estagios.environment=production
