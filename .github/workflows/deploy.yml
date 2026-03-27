@@ -27,7 +27,7 @@ jobs:
       - name: 📂 Checkout do Código
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
           ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.ref }}
 
       - name: 🔐 Login no GHCR
@@ -42,11 +42,16 @@ jobs:
           REPOSITORY_OWNER_LOWER="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
           echo "GHCR_IMAGE=ghcr.io/${REPOSITORY_OWNER_LOWER}/fabrica-estagios" >> "$GITHUB_ENV"
 
+      - name: 🔄 Atualizar tags Git locais
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          git fetch --force --tags origin
+
       - name: 🏷️ Definir tag da imagem
         working-directory: ${{ env.APP_DIR }}
         run: |
-          # Usar git describe para obter versão vX.X.X
-          IMAGE_TAG="$(git describe --tags --always 2>/dev/null || echo 'v0.1.0-dev')"
+          TARGET_REF="${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}"
+          IMAGE_TAG="$(git describe --tags --always \"${TARGET_REF}\" 2>/dev/null || echo 'v0.1.0-dev')"
           if [[ ! "${IMAGE_TAG}" =~ ^v ]]; then
             IMAGE_TAG="v0.1.0-dev-${IMAGE_TAG}"
           fi
