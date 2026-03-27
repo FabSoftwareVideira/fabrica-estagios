@@ -26,7 +26,9 @@ jobs:
       - name: Definir tags da imagem
         id: vars
         run: |
-          IMAGE_NAME="ghcr.io/${{ github.repository_owner }}/fabrica-estagios"
+          REPOSITORY_OWNER_LOWER="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
+          IMAGE_NAME="ghcr.io/${REPOSITORY_OWNER_LOWER}/fabrica-estagios"
+
           SHORT_SHA="$(git rev-parse --short HEAD)"
           APP_VERSION="sha-${SHORT_SHA}"
 
