@@ -1,3 +1,5 @@
+name: estagios-prod
+
 services:
   estagios-db:
     container_name: estagios-prod-db
