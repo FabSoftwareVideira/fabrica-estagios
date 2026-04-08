@@ -63,6 +63,7 @@ def seed_command() -> None:
     professor_user = _ensure_user("professor.demo", "professor.demo@estagios.com", "Demo123!", ["professor"])
     aluno_user = _ensure_user("aluno.demo", "aluno.demo@estagios.com", "Demo123!", ["aluno"])
     supervisor_user = _ensure_user("supervisor.demo", "supervisor.demo@estagios.com", "Demo123!", ["supervisor"])
+    wanderson_user = _ensure_user("wanderson.rigo", "wanderson.rigo@ifc.edu.br", "ifcvideira", ["admin"])
 
     empresa = Empresa.query.filter_by(cnpj="12.345.678/0001-90").first()
     if not empresa:
