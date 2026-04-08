@@ -101,6 +101,12 @@ def seed_command() -> None:
             "email": "fabricio.bizotto@ifc.edu.br",
             "cpf": "067.569.199-03",
             "is_approved": True,
+        },
+        {
+            "nome": "Wanderson Rigo",
+            "email": "wanderson.rigo@ifc.edu.br",
+            "cpf": "067.569.199-04",
+            "is_approved": True,
         }
     ]
 
