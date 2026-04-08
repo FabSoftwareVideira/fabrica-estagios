@@ -10,6 +10,8 @@ services:
       - PGDATA=/var/lib/postgresql/estagio_data
     volumes:
       - estagio_db_data:/var/lib/postgresql/estagio_data
+    ports:
+      - "50236:5432"
     networks:
       - fabrica-network
     restart: always
